@@ -1,0 +1,28 @@
+# Omelette2D runtime configuration. Restart the app after changing this file.
+
+[window]
+title = "Omelette2D"
+width = 1920
+height = 1080
+maximized = false
+
+[simulation]
+# Options: "empty", "object_demo"
+start_scene = "empty"
+paused = false
+# Options: "normal", "heat", "pressure"
+view = "normal"
+
+[tools]
+# Material names are the same as those shown in the material picker.
+material = "Sand"
+# Options: "paint", "heat", "cool", "air", "object", "grab"
+selected = "paint"
+brush_radius = 3
+heat_rate = 600.0
+cool_rate = 600.0
+pressure_rate = 20.0
+
+[ui]
+panel_width = 470.0
+panel_height = 610.0

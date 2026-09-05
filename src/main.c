@@ -1,3 +1,4 @@
+#include "Config.h"
 #include "Sandbox.h"
 #include "ShapeEditor.h"
 #include "Ui.h"
@@ -41,6 +42,19 @@ static LRESULT CALLBACK windowProc(HWND window, UINT message, WPARAM wParam, LPA
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, int showCommand) {
     (void)previous;
+    char error[256] = {0};
+    AppConfig config;
+    if (!config_load(&config, error, sizeof(error))) {
+        MessageBoxA(NULL, error, "Omelette2D configuration error", MB_OK | MB_ICONERROR);
+        return 1;
+    }
+    wchar_t windowTitle[128];
+    if (!MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, config.title, -1, windowTitle,
+                             (int)(sizeof(windowTitle) / sizeof(windowTitle[0])))) {
+        MessageBoxA(NULL, "window.title must be valid UTF-8", "Omelette2D configuration error",
+                    MB_OK | MB_ICONERROR);
+        return 1;
+    }
     const wchar_t* className = L"Omelette2DWindow";
     WNDCLASSEXW wc = {sizeof(wc)};
     wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -50,16 +64,15 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, i
     wc.lpszClassName = className;
     if (!RegisterClassExW(&wc))
         return 1;
-    HWND window =
-        CreateWindowExW(0, className, L"Omelette2D - Vulkan", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-                        CW_USEDEFAULT, 1280, 720, NULL, NULL, instance, NULL);
+    HWND window = CreateWindowExW(0, className, windowTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
+                                  CW_USEDEFAULT, config.window_width, config.window_height, NULL,
+                                  NULL, instance, NULL);
     if (!window) {
         UnregisterClassW(className, instance);
         return 1;
     }
-    ShowWindow(window, showCommand);
+    ShowWindow(window, config.maximized ? SW_SHOWMAXIMIZED : showCommand);
 
-    char error[256] = {0};
     int result = 0;
     Sandbox* sandbox = sandbox_create();
     if (!sandbox) {
@@ -71,15 +84,31 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, i
         goto cleanup;
 
     Material selected = Material_Sand;
-    int brushRadius = 3;
-    bool paused = false;
+    bool materialFound = false;
+    for (int i = 0; i < Material_Count; ++i)
+        if (!_stricmp(config.material, sandbox_material_name((Material)i))) {
+            selected = (Material)i;
+            materialFound = true;
+        }
+    if (!materialFound) {
+        snprintf(error, sizeof(error), "tools.material names an unknown material: %s",
+                 config.material);
+        goto cleanup;
+    }
+    const char* toolNames[] = {"paint", "heat", "cool", "air", "object", "grab"};
     int brushTool = 0;
-    int displayMode = SandboxView_Normal;
+    for (int i = 0; i < 6; ++i)
+        if (!_stricmp(config.tool, toolNames[i])) brushTool = i;
+    int brushRadius = config.brush_radius;
+    bool paused = config.paused;
+    int displayMode = !_stricmp(config.view, "heat") ? SandboxView_Heat
+                      : !_stricmp(config.view, "pressure") ? SandboxView_Pressure
+                                                            : SandboxView_Normal;
     int category = -1;
     char materialSearch[64] = {0};
     ShapeEditor editor;
     shape_editor_init(&editor);
-    if (wcsstr(commandLine, L"--object-demo")) {
+    if (!_stricmp(config.start_scene, "object_demo") || wcsstr(commandLine, L"--object-demo")) {
         sandbox_load_object_demo(sandbox);
         editor.visible = true;
     }
@@ -103,7 +132,8 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, i
             sandbox_update(sandbox, deltaTime);
 
         ui_begin_frame();
-        igSetNextWindowSize((ImVec2_c){470, 610}, ImGuiCond_FirstUseEver);
+        igSetNextWindowSize((ImVec2_c){config.panel_width, config.panel_height},
+                            ImGuiCond_FirstUseEver);
         igBegin("Material Lab", NULL, 0);
         igTextUnformatted("Left mouse: selected tool. Right mouse: erase.", NULL);
         if (igBeginCombo("Category",
@@ -267,10 +297,11 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, i
                 if (brushTool == 0)
                     sandbox_paint(sandbox, gridX, gridY, selected, brushRadius);
                 else if (brushTool == 1 || brushTool == 2)
-                    sandbox_heat(sandbox, gridX, gridY, (brushTool == 1 ? 600 : -600) * toolTime,
+                    sandbox_heat(sandbox, gridX, gridY,
+                                 (brushTool == 1 ? config.heat_rate : -config.cool_rate) * toolTime,
                                  brushRadius);
                 else if (brushTool == 3)
-                    sandbox_add_pressure(sandbox, gridX, gridY, 20 * toolTime);
+                    sandbox_add_pressure(sandbox, gridX, gridY, config.pressure_rate * toolTime);
                 else if (brushTool == 4 && igIsMouseClicked_Bool(0, false)) {
                     uint32_t id =
                         sandbox_create_body(sandbox, &editor.shape, (float)gridX, (float)gridY,

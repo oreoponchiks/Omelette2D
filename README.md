@@ -4,6 +4,8 @@ A compact C17/Vulkan falling-sand engine with destructible rigid objects for Win
 
 All engine code in `src/` is C: the window loop, simulation, Vulkan renderer, and UI setup. The engine calls [cimgui](https://github.com/cimgui/cimgui) directly through its generated C API. The pinned binding matches the existing Dear ImGui 1.92.8 library, preserving the UI appearance and behavior. cimgui and Dear ImGui remain third-party C++ dependencies, so building the bundled UI still requires a C++ compiler. See `third_party/cimgui/README.md` for the revision and integration details.
 
+Runtime defaults live in [`config.toml`](config.toml). It controls the window, initial scene and view, selected tool and material, brush strengths, and the first-use UI panel size. Edit the source file and rebuild; the build copies it beside `Omelette2D.exe`. You can also edit that copied file for a quick local change, though the next build may replace it. Restart the app to apply changes. Missing files use built-in defaults, while invalid or unknown settings produce a startup error so typos are visible.
+
 In Visual Studio, engine files (including `Ui.c`) are under **Source Files**, and the bindings are under **Dependencies > cimgui**. The old custom `imgui_c.cpp` wrapper has been removed.
 
 ## Build

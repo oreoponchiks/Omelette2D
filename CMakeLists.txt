@@ -21,6 +21,8 @@ target_compile_definitions(OmeletteImGui PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX VK
 target_link_libraries(OmeletteImGui PUBLIC Vulkan::Vulkan)
 
 add_executable(Omelette2D WIN32
+    src/Config.c
+    src/Config.h
     src/Ui.c
     src/Ui.h
     src/main.c
@@ -74,4 +76,5 @@ add_custom_target(OmeletteShaders ALL DEPENDS ${SHADER_OUTPUTS})
 add_dependencies(Omelette2D OmeletteShaders)
 
 add_custom_command(TARGET Omelette2D POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${SHADER_DIR}" "$<TARGET_FILE_DIR:Omelette2D>/shaders")
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${SHADER_DIR}" "$<TARGET_FILE_DIR:Omelette2D>/shaders"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/config.toml" "$<TARGET_FILE_DIR:Omelette2D>/config.toml")

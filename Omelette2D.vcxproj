@@ -96,6 +96,7 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
+    <ClCompile Include="src\Config.c"><CompileAs>CompileAsC</CompileAs></ClCompile>
     <ClCompile Include="src\Ui.c"><CompileAs>CompileAsC</CompileAs></ClCompile>
     <ClCompile Include="src\main.c"><CompileAs>CompileAsC</CompileAs></ClCompile>
     <ClCompile Include="third_party\cimgui\cimgui.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="third_party\imgui\backends\imgui_impl_win32.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\VulkanRenderer.h" />
     <ClInclude Include="src\Sandbox.h" />
     <ClInclude Include="src\Materials.def" />
@@ -131,6 +133,9 @@
     <ClInclude Include="third_party\imgui\backends\imgui_impl_win32.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="config.toml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="CMakeLists.txt" />
     <None Include="CMakePresets.json" />
     <None Include="README.md" />
