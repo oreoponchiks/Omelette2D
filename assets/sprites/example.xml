@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sprite image="example.png" material="Wood" fixed="false" break_speed="3" alpha_threshold="128">
+  <map color="#526B32" material="Plant" />
+  <map color="#79502D" material="Wood" />
+</sprite>

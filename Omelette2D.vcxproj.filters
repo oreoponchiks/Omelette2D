@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Dependencies" />
+    <Filter Include="Dependencies\Dear ImGui" />
+    <Filter Include="Dependencies\cimgui" />
+    <Filter Include="Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="third_party\cimgui\cimgui.cpp"><Filter>Dependencies\cimgui</Filter></ClCompile>
+    <ClCompile Include="src\Ui.c"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanRenderer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sandbox.c"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\Shapes.c"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\SpriteImport.c"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="src\ShapeEditor.c"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="third_party\imgui\imgui.cpp"><Filter>Dependencies\Dear ImGui</Filter></ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_demo.cpp"><Filter>Dependencies\Dear ImGui</Filter></ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_draw.cpp"><Filter>Dependencies\Dear ImGui</Filter></ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_tables.cpp"><Filter>Dependencies\Dear ImGui</Filter></ClCompile>
+    <ClCompile Include="third_party\imgui\imgui_widgets.cpp"><Filter>Dependencies\Dear ImGui</Filter></ClCompile>
+    <ClCompile Include="third_party\imgui\backends\imgui_impl_vulkan.cpp"><Filter>Dependencies\Dear ImGui</Filter></ClCompile>
+    <ClCompile Include="third_party\imgui\backends\imgui_impl_win32.cpp"><Filter>Dependencies\Dear ImGui</Filter></ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\VulkanRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ui.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="third_party\cimgui\cimgui_impl.h"><Filter>Dependencies\cimgui</Filter></ClInclude>
+    <ClInclude Include="third_party\cimgui\cimgui_impl_win32.h"><Filter>Dependencies\cimgui</Filter></ClInclude>
+    <ClInclude Include="third_party\cimgui\backend_config.h"><Filter>Dependencies\cimgui</Filter></ClInclude>
+    <ClInclude Include="src\Sprite.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="third_party\cimgui\cimgui.h"><Filter>Dependencies\cimgui</Filter></ClInclude>
+    <ClInclude Include="src\Sandbox.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\Materials.def"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\RigidBodies.inc"><Filter>Source Files</Filter></ClInclude>
+    <ClInclude Include="src\SpriteImport.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="src\ShapeEditor.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="third_party\imgui\imgui.h"><Filter>Dependencies\Dear ImGui</Filter></ClInclude>
+    <ClInclude Include="third_party\imgui\imconfig.h"><Filter>Dependencies\Dear ImGui</Filter></ClInclude>
+    <ClInclude Include="third_party\imgui\backends\imgui_impl_vulkan.h"><Filter>Dependencies\Dear ImGui</Filter></ClInclude>
+    <ClInclude Include="third_party\imgui\backends\imgui_impl_win32.h"><Filter>Dependencies\Dear ImGui</Filter></ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="shaders\sprite.vert">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="shaders\sprite.frag">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CMakeLists.txt" />
+    <None Include="CMakePresets.json" />
+    <None Include="README.md" />
+    <None Include="MATERIALS.md" />
+    <None Include="third_party\cimgui\README.md"><Filter>Dependencies\cimgui</Filter></None>
+    <None Include="third_party\cimgui\LICENSE"><Filter>Dependencies\cimgui</Filter></None>
+    <None Include="tests\sandbox_regression.c"><Filter>Tests</Filter></None>
+    <None Include="tests\rigid_body_regression.c"><Filter>Tests</Filter></None>
+    <None Include="tests\runtime_smoke.ps1"><Filter>Tests</Filter></None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SPRITES.md" />
+    <None Include="assets\sprites\example.xml"><Filter>Resource Files</Filter></None>
+    <None Include="assets\sprites\example.png"><Filter>Resource Files</Filter></None>
+    <None Include="tests\sprite_import_regression.c"><Filter>Tests</Filter></None>
+  </ItemGroup>
+</Project>
