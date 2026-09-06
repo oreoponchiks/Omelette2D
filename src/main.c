@@ -95,6 +95,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, i
                  config.material);
         goto cleanup;
     }
+    sandbox_set_tick_rate(sandbox, config.tick_rate);
     const char* toolNames[] = {"paint", "heat", "cool", "air", "object", "grab"};
     int brushTool = 0;
     for (int i = 0; i < 6; ++i)
@@ -129,7 +130,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, i
             (float)((double)(now.QuadPart - previousTime.QuadPart) / (double)frequency.QuadPart);
         previousTime = now;
         if (!paused)
-            sandbox_update(sandbox, deltaTime);
+            sandbox_update(sandbox, fminf(deltaTime, config.max_frame_delta) * config.time_scale);
 
         ui_begin_frame();
         igSetNextWindowSize((ImVec2_c){config.panel_width, config.panel_height},
@@ -233,7 +234,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous, PWSTR commandLine, i
         igSameLine(0.0f, -1.0f);
         if (igButton("Step", (ImVec2_c){0, 0})) {
             paused = true;
-            sandbox_update(sandbox, 1.0f / 60.0f);
+            sandbox_update(sandbox, 1.0f / config.tick_rate);
         }
         const char* views[] = {"Normal view", "Heat view", "Pressure view"};
         for (int i = 0; i < 3; ++i) {

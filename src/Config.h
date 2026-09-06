@@ -12,6 +12,9 @@ typedef struct AppConfig {
     bool paused;
     char start_scene[32];
     char view[32];
+    float tick_rate;
+    float time_scale;
+    float max_frame_delta;
 
     char material[64];
     char tool[32];

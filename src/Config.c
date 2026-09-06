@@ -87,6 +87,9 @@ void config_defaults(AppConfig* c) {
     c->window_height = 720;
     strcpy_s(c->start_scene, sizeof(c->start_scene), "empty");
     strcpy_s(c->view, sizeof(c->view), "normal");
+    c->tick_rate = 60.0f;
+    c->time_scale = 1.0f;
+    c->max_frame_delta = 0.05f;
     strcpy_s(c->material, sizeof(c->material), "Sand");
     strcpy_s(c->tool, sizeof(c->tool), "paint");
     c->brush_radius = 3;
@@ -107,6 +110,9 @@ static bool set_value(AppConfig* c, const char* section, const char* key, const 
         if (!strcmp(key, "paused")) return parse_bool(value, &c->paused);
         if (!strcmp(key, "start_scene")) return copy_string(c->start_scene, sizeof(c->start_scene), value);
         if (!strcmp(key, "view")) return copy_string(c->view, sizeof(c->view), value);
+        if (!strcmp(key, "tick_rate")) return parse_float(value, 10, 240, &c->tick_rate);
+        if (!strcmp(key, "time_scale")) return parse_float(value, 0, 4, &c->time_scale);
+        if (!strcmp(key, "max_frame_delta")) return parse_float(value, 0.01f, 0.25f, &c->max_frame_delta);
     } else if (!strcmp(section, "tools")) {
         if (!strcmp(key, "material")) return copy_string(c->material, sizeof(c->material), value);
         if (!strcmp(key, "selected")) return copy_string(c->tool, sizeof(c->tool), value);

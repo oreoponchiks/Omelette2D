@@ -53,6 +53,7 @@ typedef struct SandboxSample {
 Sandbox* sandbox_create(void);
 void sandbox_destroy(Sandbox* sandbox);
 void sandbox_update(Sandbox* sandbox, float delta_seconds);
+void sandbox_set_tick_rate(Sandbox* sandbox, float ticks_per_second);
 void sandbox_paint(Sandbox* sandbox, int grid_x, int grid_y, Material material, int radius);
 void sandbox_clear(Sandbox* sandbox);
 void sandbox_heat(Sandbox* sandbox, int grid_x, int grid_y, float change, int radius);

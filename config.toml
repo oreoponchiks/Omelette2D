@@ -10,6 +10,12 @@ maximized = false
 # Options: "empty", "object_demo"
 start_scene = "empty"
 paused = false
+# Simulation advances at this fixed step when using Step; lower values slow the simulation.
+tick_rate = 60.0
+# Multiplier applied to real-time updates (0 pauses simulation updates without changing the checkbox).
+time_scale = 1.0
+# Prevents a stalled window from producing a huge physics jump after it resumes.
+max_frame_delta = 0.05
 # Options: "normal", "heat", "pressure"
 view = "normal"
 

@@ -75,6 +75,7 @@ struct Sandbox {
     Sprite sprites[SpriteCapacity];
     uint32_t random_state;
     float accumulator;
+    float tick_seconds;
     SandboxView view;
     RigidBody bodies[Sandbox_MaxBodies];
     uint16_t owner[CellCount]; /* zero: terrain/particles; otherwise body slot + 1 */
@@ -212,8 +213,10 @@ static Material debris(Material m);
 
 Sandbox* sandbox_create(void) {
     Sandbox* s = calloc(1, sizeof(*s));
-    if (s)
+    if (s) {
+        s->tick_seconds = 1.0f / 60.0f;
         sandbox_clear(s);
+    }
     return s;
 }
 void sandbox_destroy(Sandbox* s) {
@@ -1000,11 +1003,15 @@ static void step(Sandbox* s) {
             }
         }
 }
+void sandbox_set_tick_rate(Sandbox* s, float ticks_per_second) {
+    if (s && isfinite(ticks_per_second) && ticks_per_second >= 10.0f && ticks_per_second <= 240.0f)
+        s->tick_seconds = 1.0f / ticks_per_second;
+}
 void sandbox_update(Sandbox* s, float deltaSeconds) {
     if (!isfinite(deltaSeconds) || deltaSeconds <= 0)
         return;
     s->accumulator += fminf(deltaSeconds, 0.1f);
-    const float tick = 1.0f / 60.0f;
+    const float tick = s->tick_seconds;
     while (s->accumulator >= tick) {
         step(s);
         s->accumulator -= tick;
